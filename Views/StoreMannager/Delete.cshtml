@@ -1,0 +1,16 @@
+﻿@model MusicStore.Models.Album
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete <strong>@Model.Title</strong>?</h3>
+
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("回到专辑列表", "Index")
+    </p>
+}

@@ -1,0 +1,43 @@
+﻿@model MusicStore.Models.Album
+
+@{
+    ViewBag.Title = "Album - " + Model.Title;
+}
+<script src="~/Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery-ui-1.11.0/jquery-ui.js" type="text/javascript"></script>
+<link href="~/Scripts/jquery-ui-1.11.0/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script>
+    $(function () {
+        $('button').button();
+        $(document).tooltip();
+       
+    });
+
+</script>
+<div id="biaoti">
+    <h2>@Model.Title</h2>
+</div>
+<div id="zhuanji">
+    <p>
+        <img id="img" alt="@Model.Title" src="@Model.AlbumArtUrl" />
+    </p>
+</div>
+<div id="album-details">
+    <p>
+        <em>Genre:</em>
+        @Model.Genre.Name
+    </p>
+    <p>
+        <em>Artist:</em>
+        @Model.Artist.Name
+    </p>
+    <p>
+        <em>Price:</em>
+        @String.Format("{0:F}", Model.Price)
+    </p>
+    <button id="button" title="将所选物品添加到购物车">
+        添加到购物车
+        @*        @Html.ActionLink("添加到购物车", "AddToCart",
+"ShoppingCart", new { id = Model.AlbumId }, "")*@
+    </button>
+</div>

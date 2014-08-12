@@ -1,0 +1,23 @@
+﻿@model IEnumerable<MusicStore.Models.Genre>
+
+@{
+    ViewBag.Title = "商店主页";
+}
+
+<div id="content">
+    <div id="breadcrumd">
+        <h1>
+            <a class="liupai" href="/store" target="_blank">流派</a>
+
+        </h1>
+    </div>
+
+    <ul id="fenlei">
+        @foreach (var genre in Model)
+        {
+            <li>@Html.ActionLink(genre.Name, "Browse", new { name = genre.Name })</li>
+ 
+        }
+    </ul>
+
+</div>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<MusicStore.Models.Genre>
+
+@{
+    ViewBag.Title = "浏览";
+}
+<div id="content">
+    <div id="breadcrumd">
+        <h1><a class="liupai"href="/store" target="_blank">流派</a></h1>
+        <span> > @Html.ActionLink(Model.First().Name, "browse", new { name=Model.First().Name})</span>
+    </div>
+    <script>
+        $(function () {
+            
+        })
+    </script>
+       <ul id="zhuanji_brwose">
+        @foreach (var album in Model.First().Albums)
+        {
+            <li>
+                <div class="content_block">
+                    <a href="@Url.Content("/store/details")?id=@album.AlbumId">
+                    <img src="@album.AlbumArtUrl" />
+                    </a>
+                    <span>@album.Title</span>
+               
+               </div>
+            </li>
+        }
+    </ul>
+</div>
+<script>
+    $(function () {
+        init();
+    });
+
+</script>

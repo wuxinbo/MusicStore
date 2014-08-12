@@ -1,0 +1,88 @@
+﻿@model MusicStore.Models.Album
+
+@{
+    ViewBag.Title = "Album - " + Model.Title;
+}
+
+<div id="content">
+ <div id="breadcrumd">
+        <h1><a class="liupai"href="/store" target="_blank">流派</a></h1>
+        <span> &gt; @Html.ActionLink(Model.Genre.Name, "browse", new { name=Model.Genre.Name})</span>
+        <span> &gt; @Model.Title</span>
+    </div>
+
+
+    <div id="zhuanji">
+        <div id="zhuanji_pic">
+            <p>
+                <img id="img" alt="@Model.Title" src="@Model.AlbumArtUrl" />
+            </p>
+        </div>
+
+        <div id="album-details">
+            <div id="biaoti">
+
+                <h2 id="biao_value">@Model.Title</h2>
+            </div>
+            <ul id="summary">
+
+                <li id="Genre">
+
+                    <span>流&nbsp;&nbsp;&nbsp派:</span>
+                    <span id="genre_value" >
+                        @Model.Genre.Name
+                    </span>
+
+                </li>
+                <li id="Artist">
+
+                    <span>艺术家:</span>
+                    <span id="artist_value">
+                        @Model.Artist.Name
+                    </span>
+
+                </li>
+                <li id="Price">
+
+                    <em>价&nbsp;&nbsp格:</em>
+                    <span id="price_value">
+                    $@String.Format("{0:N2}", Model.Price)
+                </span>
+                </li>
+
+            </ul>
+             <ul id="number" >
+            <li id="amount">
+                <span>购买数量：</span>
+                <input id="amount_sub" class="amount_button" type="button" value="-" />
+               
+                <input id="amount_value" name="amount" value="1" />
+                <input id="amount_add" class="amount_button" type="button" value="+" />
+            </li>
+
+        </ul>
+            <div id="add_cart">
+        <p id="button" title="将所选物品添加到购物车">
+            添加到购物车
+           @* @Html.ActionLink("添加到购物车", "AddToCart",
+"ShoppingCart", new { id = Model.AlbumId }, "")*@
+        </p>
+    </div>
+        </div>
+       
+
+    </div>
+    
+
+</div>
+
+<script>
+    $(function () {
+        init();
+        $('.amount_button').click(amount);
+        $('#amount_value').change(valie_amount);
+        $('#button').click(addToCart);
+    });
+
+
+</script>
