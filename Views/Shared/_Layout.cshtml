@@ -51,6 +51,8 @@
             <input id="search_buttton" type="button" value="搜索" />
         </div>
         <div id="shopping_cart">
+                        <span id="p_counts">0
+            </span>
             <dl>
 
                 <dt class="ld">
@@ -67,6 +69,7 @@
                         <div class="smt">
                             <div class="smc">
                                 <span class="f1">最新加入的商品
+                                
                                 <input type="hidden" id="p_length" />
                                 </span>
                                 <script>
@@ -78,7 +81,7 @@
                             {
 
                            
-                                <ul id="cart_album"class="item_info@("_"+i)">
+                                <ul id="cart_album"class="item_info@("_" + i)">
 
                                     <li>
                                         <div id="p-img">
@@ -99,7 +102,7 @@
                                         <span id="cart_count">1
                                         </span>
                                             <br />
-                                            <a>删除
+                                            <a onclick="delete_item(@(i))">删除
                                             </a>
                                         </div>
 

@@ -41,7 +41,8 @@ function liupai_position() {
 }
 function addToCart() {
     var album_1 = $.cookie('albums');
-    if (album_1 != null) {
+    alert(album_1.length);
+    if (album_1 != null&&album_1.length>0) {
         var object = JSON.parse(album_1);
         var albums = object;
     } else {
@@ -53,8 +54,8 @@ function addToCart() {
     //JSON.stringify(albums);
     //将js对象转化成json字符串。
     $.cookie('albums', JSON.stringify(albums), {path:"/"});
-    
-    //alert(albums.length);
+    //alert(album_1.length);
+   
 }
 function album() {
     this.title = $('#biao_value').text();
@@ -65,9 +66,9 @@ function album() {
 }
 function parse_json_cart() {
     var album_1 = $.cookie('albums');
-    //alert(album_1);
+    
     var object = JSON.parse(album_1);
-   
+    alert(object.length);
     for (var i in object) {
              
         var str = ".item_info_" + i;
@@ -81,6 +82,7 @@ function parse_json_cart() {
     $('#counts').text(object.length);
     $('#total').text('$'+sum(object));
     $('#p_length').val(object.length);
+    $('#p_counts').text(object.length);
 }
 //计算商品的总价。
 function sum(ob1) {
@@ -99,4 +101,16 @@ function sum(ob1) {
     }
    
     return total;
+}
+function get_item_array() {
+    var album_1 = $.cookie('albums');
+    //alert(album_1);
+    var object = JSON.parse(album_1);
+    return object;
+    
+}
+function delete_item(id) {
+    var albums = get_item_array();
+    var albums =albums.splice(id, 1);
+    $.cookie('albums', albums);
 }
