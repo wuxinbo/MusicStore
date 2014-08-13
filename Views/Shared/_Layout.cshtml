@@ -60,30 +60,22 @@
                 @{
                     if (Request.Cookies["albums"] != null)
                     {
-                        //Newtonsoft.Json.Linq.JObject ob1 = 
-                        //    Newtonsoft.Json.Linq.JObject.Parse(Request.Cookies["albums"].Value);
-                        Console.Write(Request.Cookies["albums"].ToString());
                        
-                    <dd id="subbox">
-
+                       
+                    <dd class="subbox">
+                        
                         <div class="smt">
                             <div class="smc">
                                 <span class="f1">最新加入的商品
                                 
-                                <input type="hidden" id="p_length" />
                                 </span>
-                                <script>
-                                    $('p_length')
-
-                                </script>
+                               
                             </div>
-                            @for (int i = 0; i < 3; i++)
-                            {
-
                            
-                                <ul id="cart_album"class="item_info@("_" + i)">
-
+                                <ul id="cart_album"class="item_info(0)">
+                                    
                                     <li>
+                                        <input type="hidden" id="p_id" /> 
                                         <div id="p-img">
 
                                             <a>
@@ -102,13 +94,13 @@
                                         <span id="cart_count">1
                                         </span>
                                             <br />
-                                            <a onclick="delete_item(@(i))">删除
-                                            </a>
+                                            <span id="delete" onclick="delete_item(0)">删除
+                                            </span>
                                         </div>
 
                                     </li>
                                 </ul>
-                            }
+                           <div class="fenge"></div>
                             <div class="smb">
                                 共<span id="counts">1</span>件商品，总价
                            
@@ -123,7 +115,7 @@
                     }
                     else
                     {
-                    <dd id="subbox">
+                    <dd class="subbox">
                         <b></b>
                         <span>购物车里面没有商品
                         </span>
@@ -150,13 +142,15 @@
     <script>
         $(function () {
             $('#shopping_cart').mouseover(function () {
-                $('#subbox').show();
+                $('.subbox').show();
                 parse_json_cart();
+                
             });
             $('#shopping_cart').mouseleave(function () {
-                $('#subbox').hide();
+                $('.subbox').hide();
 
             });
+
             parse_json_cart();
 
 

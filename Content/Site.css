@@ -9,6 +9,16 @@
 	
 
 }
+#delete{
+    cursor:pointer;
+    border:1px solid blue;
+    padding: 2px 6px;
+    border-radius:5px;
+}
+#delete:hover{
+    border:1px solid yellow;
+    color:red;
+}
 #p_counts{
     display:block;
     position:absolute;
@@ -20,7 +30,7 @@
     font-size:18px;
     background-color:red;
     border-radius:20px;
-    
+    border:3px solid #fff;
 }
 .price{
      color:red;
@@ -71,6 +81,7 @@ margin-left:10px;
 }
 #cart_album{
     list-style:none;
+    display:none;
 }
 #cart_img{
     width:50px;
@@ -101,7 +112,7 @@ border-bottom:1px solid #ddd;
     padding:5px !important;
     color:#000 !important;
 }
-#subbox b{
+.subbox b{
     float:left;
     height:49px;
     width:56px;
@@ -109,9 +120,7 @@ border-bottom:1px solid #ddd;
     background-position:0% 0%;
     
 }
-#subbox span{
-   
-}
+
 #shopping_cart dt:hover{
     background-color:#fff;
     border: 1px solid #DDD;
@@ -121,7 +130,7 @@ border-bottom:1px solid #ddd;
     background-position: -115px -114px;
     box-shadow: 0px -3px 5px #DDD;
 }
-#subbox{
+.subbox{
     display:none;
     border:1px solid #DDD;
    

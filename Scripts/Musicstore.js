@@ -55,13 +55,19 @@ function addToCart() {
         for (var i in albums) {
             //如果ID相同则说明是同一个产品。
             if (id == albums[i].id) {
-                albums[i].count = album_2.count;
-            } else {
+                //将要添加的商品个数。
+                var item_count = parseInt(album_2.count);
+                var albums_count=parseInt(albums[i].count)
+                albums[i].count = item_count + albums_count;
+                break;
+                //如果i==数组的长度-1，表示数组遍历完也没有找到同类商品。
+            } else if(i==albums.length-1) {
                 albums[albums.length] = album_2;
             }
         }
+        //albums[albums.length] = album_2;
     } else {
-        //if(album_2.){}
+        
         albums[albums.length] = album_2;
     }
     //JSON.stringify(albums);
@@ -118,25 +124,48 @@ function get_item_array() {
 //删除数组中的商品。
 function delete_item(id) {
     var albums = get_item_array();
-    var albums =albums.splice(id, 1);
+    
+    //删除数组中的元素，并且返回要删除的元素。
+     albums.splice(id, 1);
+   
     $.cookie('albums', JSON.stringify(albums), { path: "/" });
-    set_itemVal(albums);
+    parse_json_cart();
 }
 //设置购物车商品数目
 function set_itemVal(ob1) {
     $('#p_counts').text(ob1.length);
 }
+//替换购物车的数据，
 function set_shopping_cart(ob1) {
+    $('.fenge').children().remove();
+    //根据数组长度生成相应的列表。
+    for(var i=0;i<ob1.length;i++){
+        $('.fenge').append($('#cart_album').clone());
+           }
+    var cart_album = $(".fenge").children("#cart_album");
     for (var i in ob1) {
-
+        cart_album.eq(i).removeClass("item_info(0)");
+        //动态生成class类名。
+        var str_1 = "item_info_" + i;
+        cart_album.eq(i).addClass(str_1);
+        cart_album.show();
         var str = ".item_info_" + i;
-        $(str).find(' #cart_img').attr('src', ob1[i].img);
-        $(str).find(' #cart_title').text(ob1[i].title);
+         //为符合条件下得各个元素赋值。    
+        $(str).find('#cart_img').attr('src', ob1[i].img);
+        //替换专辑中的值。
+        $(str).find('#cart_title').text(ob1[i].title);
+        //替换专辑中的价格。
         $(str).find('#item_price').text(ob1[i].price);
+        //替换商品的数量。
         $(str).find('#cart_count').text(ob1[i].count);
-        
+        $(str).find('#p_id').val(ob1[i].id);
+        //替换删除商品时的点击事件。
+        $(str).find('#delete').attr("onclick", 'delete_item('+i+')');
     }
     $('#counts').text(ob1.length);
     $('#total').text('$' + sum(ob1));
-    $('#p_length').val(ob1.length);
+    
+}
+function init_cart() {
+   
 }
