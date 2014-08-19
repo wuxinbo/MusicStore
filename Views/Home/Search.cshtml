@@ -1,25 +1,33 @@
 ﻿@model IEnumerable<MusicStore.Models.Album>
 
 @{
-    ViewBag.Title = "浏览";
+    ViewBag.Title = "商品搜索-MusicStore";
 }
+
 <div id="content">
-    <div id="breadcrumd">
-        <h1><a class="liupai" href="/store" target="_blank">流派</a></h1>
-        <span>> @Html.ActionLink(Model.First().Genre.Name, "browse", new { name = Model.First().Genre.Name })</span>
-    </div>
-    <script>
+
+
+
+<div id="breadcrumd">
+        <h1><a class="liupai"  >搜索结果</a></h1>
         
-    </script>
+    </div>
     <ul id="zhuanji_brwose">
         @foreach (var album in Model)
         {
             <li>
+                @*@Html.DisplayFor(a=>album.AlbumId)*@
                 <div class="content_block">
                     <a href="@Url.Content("/store/details")?id=@album.AlbumId">
                         <img src="@album.AlbumArtUrl" />
+                       
                     </a>
-                    <span>@album.Title</span>
+                    <div id="p_name">
+                         <a href="@Url.Content("/store/details")?id=@album.AlbumId">
+                              @album.Title
+                           </a>
+                    </div>
+                    <span id="zhuanji_biaoti"></span>
 
                 </div>
             </li>
@@ -29,13 +37,13 @@
 
 
         <ul id="page">
-            <li><a href="@Url.Content("~/Store/browse")?Page=1&" 
+            <li><a href="@Url.Content("~/home/search")?Page=1&key=@(ViewBag.key)" 
                 class="page_text ">首页</a></li>
             @{
                 if (ViewBag.current_page > 1)
                 {
                 <li>
-                    <a href="@Url.Content("~/Store/browse")?Page=@(ViewBag.current_page - 1)&name=@(Model.First().Genre.Name)">《
+                    <a href="@Url.Content("~/home/search")?Page=@(ViewBag.current_page - 1)&key=@(ViewBag.key)">《
                     </a>
 
                 </li>
@@ -49,15 +57,15 @@
             }
 
             @Html.Hidden("current_page")
+            @Html.Hidden("key")
             @{for (int i = 1; i < ViewBag.count + 1; i++)
               {
                 <li>
 
-                    @Html.ActionLink(i.ToString(), "browse", new
+                    @Html.ActionLink(i.ToString(), "search","home", new
                {
                    Page = i,
-                   name = Model.First().
-                          Genre.Name
+                   key =ViewBag.key
                })
 
                 </li>
@@ -65,10 +73,12 @@
               }
                
             }
-            @{  if (ViewBag.current_page < ViewBag.count)
+
+            @{  
+                if (ViewBag.current_page < ViewBag.count)
                 {
                 <li>
-                    <a href="@Url.Content("~/Store/browse")?name=@(Model.First().Genre.Name)&Page=@(ViewBag.current_page + 1)">
+                    <a href="@Url.Content("~/home/search")?key=@(ViewBag.key)&Page=@(ViewBag.current_page + 1)">
                         》
                     </a>
 
@@ -76,6 +86,7 @@
             
                 }
                 else
+                
                 {
 
                 }
@@ -83,8 +94,8 @@
             }
 
             <li>
-                
-                <a href="@Url.Content("~/Store/borwse")?name=@(Model.First().Genre.Name)&Page=@(ViewBag.count)"
+               
+                <a href="@Url.Content("~/home/search")?key=@(ViewBag.key)&Page=@(ViewBag.count)"
             class="page_text">末页</a></li>
 
 
@@ -92,11 +103,14 @@
         <span id="sum_page"><span>共有</span><b> @(ViewBag.count) </b>页，
             总计<b> @(ViewBag.counts) </b>条记录</span>
     </div>
-</div>
-<script>
-    $(function () {
-        init();
-        page_choose();
-    });
+    <script>
+        $(function () {
+            page_choose();
+            var key = $('#key').val();
+            $('.search').val(key);
+            setKeywordClass();
+        });
 
-</script>
+    </script>
+
+</div>

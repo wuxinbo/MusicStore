@@ -9,33 +9,76 @@ using MusicStore.Models;
 
 namespace MusicStore.Controllers
 {
-    public class StoreMannagerController : Controller
+    public class StoreMannagerController : MusicStoreController
     {
-        private MusicStoreDb db = new MusicStoreDb();
+        //private MusicStoreDb db = new MusicStoreDb();
 
         //
         // GET: /StoreMannager/
 
-        public ActionResult Index(int page=1)
-        {   //默认一页只显示10条记录。
-            const int page_size = 10;
+        public ActionResult Index(String zhuanji_val, int GenreId = 0, int page = 1)
+        {  
+           
             //要跳过的记录数。
             int skip_count = (page-1)*page_size;
-            var album = db.album.Include(a => a.Genre).
-                Include(a => a.Artist).
-                OrderBy(a=>a.Price).
+            //专辑名
+            String genre_name=null;
+            //得到记录数，默认为0。
+            int count = 0;
+            //全部查询所有的专辑，以及和其相关的实体。
+            IEnumerable<Album> album = db.album.Include(a => a.Genre).
+                                        Include(a => a.Artist);
+            IEnumerable<Album> albums = null;
+            // 如果GenreId不为0，表示用户选择了一个条件。根据传入的风格Id找到相应的名称
+            if(GenreId !=0){
+                 genre_name = (from g in db.genre
+                                  where g.GenreId == GenreId
+                                  select g.Name).Single();
+            }
+            //判断风格名称和专辑名（不为空且不是空白）
+            if (genre_name != null && !String.IsNullOrEmpty(zhuanji_val) )
+            {   //根据条件查询专辑名称。
+                albums = album.
+                Where(a => a.Genre.Name == genre_name && a.Title == zhuanji_val).
+                OrderBy(a => a.Price).
                 Skip(skip_count).Take(page_size);
-            //得到记录数。
-            int count=db.album.Include(a => a.Genre).
-                Include(a => a.Artist).Count();
-            //得到格式化之后的页数。
-            ViewBag.count = count % page_size == 0 ? count / page_size : (count / page_size)+1;
-            ViewBag.current_page = page;
-            return View(album.ToList());
+                //得到记录数。
+                count = album.
+               Where(a => a.Genre.Name == genre_name && a.Title == zhuanji_val).
+               Count();
+            }
+            else if (genre_name != null && String.IsNullOrEmpty(zhuanji_val))
+            {
+                 albums = album.
+                  Where(a => a.Genre.Name == genre_name).
+                  OrderBy(a => a.Price).
+                  Skip(skip_count).Take(page_size);
+
+                count = album.
+               Where(a => a.Genre.Name == genre_name).
+               Count();
+            }
+            else {
+                //当没有条件时，默认采用这种查询。
+                 albums = album.
+                     
+                     OrderBy(a => a.Price).
+                     Skip(skip_count).Take(page_size);
+
+                count = album.
+                        Count();
+            }
+
+            genreSelectDownLIst();
+            //返回查到的商品总数。
+            InitPage(page, page_size, count);
+            return View(albums.ToList());
         }
 
-        //
-        // GET: /StoreMannager/Details/5
+        
+
+        
+
 
         public ActionResult Details(int id = 0)
         {
@@ -52,13 +95,22 @@ namespace MusicStore.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.GenreId = new SelectList(db.genre, "GenreId", "Name");
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name");
+            genreSelectDownLIst();
+            GenreAritistSelectDownLIst();
             return View();
         }
 
-        //
-        // POST: /StoreMannager/Create
+       
+
+       
+
+        /// <summary>
+        /// 此方法接收从页面发来的post请求，将对象数据添加进数据库。
+        /// </summary>
+        /// <param name="album"> 从页面传过来的数据</param>
+        /// <returns>
+        /// 验证失败，返回上一页面，并保留数据。
+        /// </returns>
 
         [HttpPost]
         public ActionResult Create(Album album)
@@ -70,11 +122,12 @@ namespace MusicStore.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GenreId = new SelectList(db.genre, "GenreId", "Name", album.GenreId);
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);
+            genreSelectDownLIst();
+            GenreAritistSelectDownLIst();
             return View(album);
         }
 
+      
         //
         // GET: /StoreMannager/Edit/5
 
@@ -85,8 +138,8 @@ namespace MusicStore.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.GenreId = new SelectList(db.genre, "GenreId", "Name", album.GenreId);
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);
+            genreSelectDownLIst();
+            GenreAritistSelectDownLIst();
             return View(album);
         }
 
@@ -102,8 +155,8 @@ namespace MusicStore.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GenreId = new SelectList(db.genre, "GenreId", "Name", album.GenreId);
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);
+            genreSelectDownLIst();
+            GenreAritistSelectDownLIst();
             return View(album);
         }
 

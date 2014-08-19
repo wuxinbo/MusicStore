@@ -13,11 +13,19 @@
     </div>
 
     <ul id="fenlei">
-        @foreach (var genre in Model)
+       @{
+           int i=1;
+        foreach (var genre in Model)
         {
-            <li>@Html.ActionLink(genre.Name, "Browse", new { name = genre.Name })</li>
- 
+            
+            <li>
+                <span id="number_genre">@i</span>
+                @Html.ActionLink(genre.Name, "Browse", new { name = genre.Name })
+
+            </li>
+            i++;
         }
+       }
     </ul>
 
 </div>

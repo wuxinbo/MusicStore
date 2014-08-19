@@ -18,11 +18,25 @@
 
 
 <div id="content">
-    <p id="create" class="create">
-        @Html.ActionLink("增加新专辑", "Create")
-    </p>
+    <div id="zhuanji_search">
+        <form action="/storemannager/index" id="condition_form" method="get">
+
+
+            <span id="condition_fenge">风格</span>
+            @Html.DropDownList("GenreId", "请选择风格...")
+
+            <span id="condition_zhuanji">专辑</span>
+            <input id="condition_zhuanji_val" name="zhuanji_val" />
+            <input type="submit" value="搜索" />
+        </form>
+        <p id="create" class="create">
+            @Html.ActionLink("增加新专辑", "Create")
+        </p>
+    </div>
+
     <table class="table">
         <tr>
+
             <th>
                 @Html.DisplayNameFor(model => model.Genre.Name)
             </th>
@@ -64,57 +78,69 @@
         }
 
     </table>
-    <ul id="page">
-        <li><a href="@Url.Content("~/Storemannager/index")?Page=1" class="page_text ">首页</a></li>
-        @{
-            if (ViewBag.current_page >1)
-            {
-            <li><a href="@Url.Content("~/Storemannager/index")?Page=@(ViewBag.current_page - 1)">《
-            </a>
+    <div id="page_info">
 
-            </li>
+
+        <ul id="page">
+            <li><a href="@Url.Content("~/Storemannager/index")?Page=1" class="page_text ">首页</a></li>
+            @{
+                if (ViewBag.current_page > 1)
+                {
+                <li><a href="@Url.Content("~/Storemannager/index")?Page=@(ViewBag.current_page - 1)">《
+                </a>
+
+                </li>
             
-            }else{
-                
-          
+                }
+                else
+                {
+
+
+                }
             }
-            }
-            
-        @Html.Hidden("current_page")
-        @{for (int i = 1; i < ViewBag.count + 1; i++)
-          {
-            <li>
 
-                @Html.ActionLink(i.ToString(), "index", new { Page = i })
+            @Html.Hidden("current_page")
+            @{for (int i = 1; i < ViewBag.count + 1; i++)
+              {
+                <li>
 
-            </li>
+                    @Html.ActionLink(i.ToString(), "index", new { Page = i })
 
-          }
+                </li>
+
+              }
                
-        }
-        @{  if (ViewBag.current_page < ViewBag.count)
-            {
-            <li><a href="@Url.Content("~/Storemannager/index")?Page=@(ViewBag.current_page + 1)">》
-            </a>
-
-            </li>
-            
-            }else{
-           
             }
-            
-        }
+            @{  if (ViewBag.current_page < ViewBag.count)
+                {
+                <li><a href="@Url.Content("~/Storemannager/index")?Page=@(ViewBag.current_page + 1)">》
+                </a>
 
-        <li><a href="@Url.Content("~/Storemannager/index")?Page=@(ViewBag.count)"
+                </li>
+            
+                }
+                else
+                {
+
+                }
+            
+            }
+
+            <li><a href="@Url.Content("~/Storemannager/index")?Page=@(ViewBag.count)"
             class="page_text">末页</a></li>
-        
-    </ul>
+
+
+        </ul>
+        <span id="sum_page"><span>共有</span><b> @(ViewBag.count) </b>页，
+            总计<b> @(ViewBag.counts) </b>条记录</span>
+    </div>
 </div>
 
 <script>
     $(function () {
         init();
         page_choose();
+        $('#condition_form  #condition_zhuanji #condition_zhuanji_val').addClass("condition");
     });
 
 </script>

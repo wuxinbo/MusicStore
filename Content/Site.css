@@ -9,6 +9,56 @@
 	
 
 }
+.counts{
+    color:red;
+    padding:2px;
+    
+}
+#cart-total{
+    height:50px;
+    text-align:right;
+    
+}
+#cartTotal_price{
+    padding:5px;
+    font-size:22px;
+    
+}
+#p_name a{
+    color:#000;
+  
+}
+#p_name a:hover{
+    text-decoration:underline;
+    
+}
+
+#sum_page{
+    line-height:40px;
+    padding-left:10px;
+}
+#page_info{
+    height:40px;
+    position:relative;
+    top:40px;
+    clear: both;
+}
+.condition{
+    padding:5px;
+}
+#condition_zhuanji_val{
+    height:25px;
+}
+#condition_zhuanji {
+    
+}
+#zhuanji_search{
+    height:auto;
+    
+}
+#GenreId{
+    width:auto;
+}
 #delete{
     cursor:pointer;
     border:1px solid blue;
@@ -120,16 +170,18 @@ border-bottom:1px solid #ddd;
     background-position:0% 0%;
     
 }
-
-#shopping_cart dt:hover{
-    background-color:#fff;
-    border: 1px solid #DDD;
+.cart_dt_hover{
+    background-color:#fff !important;
+    border: 1px solid #ddd!important;
+    border-bottom-width:0px !important;
+    border-bottom-color:#fff !important;
+    border-style:solid solid none!important;
     
-    border-style:solid solid none;
-    
-    background-position: -115px -114px;
+    background-position: -115px -114px!important;
     box-shadow: 0px -3px 5px #DDD;
+    
 }
+
 .subbox{
     display:none;
     border:1px solid #DDD;
@@ -139,7 +191,14 @@ border-bottom:1px solid #ddd;
     width:350px;
     position:relative;
     top:30px;
-    box-shadow: 0px -4px 5px #DDD;
+    box-shadow: 2px 0px 5px #DDD;
+    z-index:2;
+}
+.smt{
+     border:1px solid #00f;
+    position:absolute;
+    z-index:1;
+    
 }
 #shopping_cart{
     width:130px;
@@ -150,7 +209,7 @@ border-bottom:1px solid #ddd;
     top:20px;
    
 }
-#shopping_cart dt{
+.ld{
     position:absolute;
     height:30px;
     background-color: #F7F7F7; 
@@ -180,17 +239,18 @@ border-bottom:1px solid #ddd;
     cursor:pointer;
 }
 #zhuanji_brwose span{
-   padding:10px ;
-   color:#fff;
+   overflow:hidden;
+    
+   text-align:center;
+   line-height:10px;
    font-weight:bold;
 }
 #zhuanji_brwose li{
     float:left;
     border-width:0.5px ;
-    border-style: solid;
-    border-color:#111 #111 #333 #333;
+    
     border-right:1px;
-    background-color:#444;
+   
 }
 .content_block{
    
@@ -211,7 +271,14 @@ border-bottom:1px solid #ddd;
     right:200px;
 }
 #zhuanji_brwose img:hover{
-     border:2px solid #FFD700;
+    position:relative;
+    z-index:3;
+    border:2px solid #FFD700;
+   top:-40px;
+    overflow:hidden;
+}
+#zhuanji_brwose a{
+    height:auto;
 }
 #breadcrumd h1{
     font-weight:700px;
@@ -250,19 +317,18 @@ border-bottom:1px solid #ddd;
     border:none !important;
 }
 #create{
-    width:150px;
-    height:40px;
-   position:relative;
-   left:730px;
-    top:18px;
+    float:right;
+   
+   
+  
 }
 #create a{
    
-    background-color:#999999;
+   
     text-align:center;
-    border:1px solid #fff; 
-    border-radius:6px;
-    padding:4px 1px;
+    border:1px solid #ddd; 
+    border-radius:4px;
+   
 }
 #create a:hover{
     border:1px solid orange; 
@@ -279,9 +345,8 @@ border-bottom:1px solid #ddd;
 }
 #page{
     width:330px;
-    height:40px;
-    position:relative;
-    top:40px;
+   
+    
     margin: 0 auto;
    
 }
@@ -485,7 +550,7 @@ height: 552px;
 height:auto;
 
 padding:10px 0;
-
+clear:both;
 }
 #add_cart a{
     font-size:0.8em;
@@ -527,9 +592,9 @@ clear: both;
 
 #content {
 	
-height:800px;
 
-border:2px solid red;
+
+/*border:2px solid red;*/
 clear:both;	
 
 }
@@ -537,7 +602,7 @@ clear:both;
 
  #content p {
 	
-font-size: 2em;
+font-size: 1.2em;
 	
     
 }
@@ -555,19 +620,17 @@ list-style:  none;
 #fenlei {
 	position:relative;
     top:30px;
-
+    width:400px;
 }
 
 
     #fenlei li {
 	
-        padding: 10px;
+    padding: 10px;
 	
     text-align: center;
 	
-    border: 1px solid antiquewhite;
-	
-    border-radius: 6px;
+   
 	
     margin: 5px;
 	
@@ -575,7 +638,18 @@ list-style:  none;
 	
 
 }
-
+#number_genre{
+ float:left;
+height:22px;
+width:22px;
+line-height:22px;
+ color:#000;
+ background-color:#828588;
+}
+#fenlei a{
+    width:100px;
+   
+}
 
     #fenlei li:hover {
 	
@@ -1220,7 +1294,10 @@ tr
 	
 
 }
-
+td{
+   border: 1px solid #000; 
+    
+}
 
 
 th

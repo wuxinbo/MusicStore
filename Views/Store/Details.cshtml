@@ -62,15 +62,14 @@
             </li>
 
         </ul>
-            <div id="add_cart">
+           <div id="add_cart">
         <p id="button" title="将所选物品添加到购物车">
             添加到购物车
-           @* @Html.ActionLink("添加到购物车", "AddToCart",
-"ShoppingCart", new { id = Model.AlbumId }, "")*@
+          
         </p>
     </div>
         </div>
-       
+        
 
     </div>
     
@@ -80,7 +79,9 @@
 <script>
     $(function () {
         init();
-        $('.amount_button').click(amount);
+        $('.amount_button').click(function(){
+            amount($(this).val());
+        });
         $('#amount_value').change(valie_amount);
         $('#button').click(addToCart);
     });

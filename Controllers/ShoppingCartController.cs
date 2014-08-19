@@ -1,4 +1,5 @@
-﻿using MusicStore.Models;
+﻿using MusicStore.Controllers;
+using MusicStore.Models;
 using MusicStore.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -8,33 +9,33 @@ using System.Web.Mvc;
 
 namespace MusicStore.Controllers
 {
-    public class ShoppingCartController : Controller
+    public class ShoppingCartController : MusicStoreController
     {
         //
         // GET: /ShoppingCart/
-        private MusicStoreDb store = new MusicStoreDb();
+       
         public ActionResult Index()
         {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
-            // Set up our ViewModel
-            var viewModel = new ShoppingViewModel
-            {
-                CartItems = cart.GetCartItems(),
-                CartTotal = cart.GetTotal()
-            };
+            //var cart = ShoppingCart.GetCart(this.HttpContext);
+            //// Set up our ViewModel
+            //var viewModel = new ShoppingViewModel
+            //{
+            //    CartItems = cart.GetCartItems(),
+            //    CartTotal = cart.GetTotal()
+            //};
             // Return the view
-            return View(viewModel);
+            return View();
         }
         [Authorize]
         public ActionResult AddToCart(int id,int count)
         {
             // 从数据库中得到要加入购物车的专辑商品。
-            var addedAlbum = store.album
+            var addedAlbum = db.album
             .Single(album => album.AlbumId == id);
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
             cart.AddToCart(addedAlbum);
-            // Go back to the main store page for more shopping
+            // Go back to the main db page for more shopping
             return RedirectToAction("Index");
         }
         [HttpPost]
@@ -43,7 +44,7 @@ namespace MusicStore.Controllers
             // Remove the item from the cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
             // 得到需要删除的专辑的标题。
-            string albumName = store.Carts
+            string albumName = db.Carts
             .Single(item => item.RecordId == id).Album.Title;
             // Remove from cart
             int itemCount = cart.RemoveFromCart(id);

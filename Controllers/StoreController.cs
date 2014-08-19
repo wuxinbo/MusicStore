@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace MusicStore.Controllers
 {
-    public class StoreController : Controller
+    public class StoreController : MusicStoreController
     {
         //
         // GET: /Store/
-        MusicStoreDb storedb = new MusicStoreDb();
+        //private Musicdb db = new Musicdb();
         public ActionResult Index()
         {
-            var genrelist = storedb.genre.ToList();
+            var genrelist = db.genre.ToList();
             //insert();
             return View(genrelist);
         }
@@ -187,26 +188,27 @@ namespace MusicStore.Controllers
                 new Artist { Name = "Zeca Pagodinho" }
             };
            
-            //foreach (Album genre in albums)
-            //{
-            //    storedb.album.Add(genre);
-            //}
-            //storedb.SaveChanges();
-
+          
         }
-        public ActionResult Browse(String name) {
+        public ActionResult Browse(String name,int page=1) {
+            const int page_size = 10;
+            //要跳过的记录数。
+            int skip_count = (page - 1) * page_size;
+            var albums = db.album.Include(a => a.Genre).
+                       Where(a => a.Genre.Name == name);
+            //按条件查询流派里的所有专辑,并进行分页查询。
+            albums = albums.
+                        OrderBy(a=>a.Price).
+                        Skip(skip_count).Take(page_size);
 
-            var model = (storedb.genre.
-                Include("Albums").
-                Where(e => e.Name == name).
-                OrderBy(e=>e.Name)).Skip(0).Take(5);
-                
-         
-            return View(model);
+            var count = albums.
+                        Count();
+            InitPage(page,page_size,count);
+            return View(albums);
         }
         public ActionResult Details(int id)
         {
-            Album album = storedb.album.Find(id);
+            Album album = db.album.Find(id);
             return View(album);
         }
     }

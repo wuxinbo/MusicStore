@@ -1,11 +1,14 @@
-﻿function init() {
+﻿//页面初始化
+function init() {
     $('button,button,#button').button();
    
     $(document).tooltip();
 
 }
-function amount() {
-    var value = $(this).val();
+//对数量增加或减少button的click事件逻辑判断
+function amount(val) {
+    var value = val;
+    
     if (value == '+') {
         
         $('#amount_value').val(parseInt($('#amount_value').val())+1); 
@@ -13,6 +16,7 @@ function amount() {
         $('#amount_value').val(parseInt($('#amount_value').val()) - 1);
     }
 }
+//判断用户商品数量是否为数字，如果不是数字将强行修改为数字。
 function valie_amount() {
     var value = $('#amount_value').val();
     var is = isNaN(value);
@@ -25,7 +29,7 @@ function page_choose() {
     var current_page = $('#current_page').val();
     var page_val = $("[href='/Storemannager?Page=1']").text();
     $('#page').children().each(function () {
-        //alert($(this).text());
+        
         var page=$(this).children();
         if (page.text() == current_page) {
             page.parent().addClass('current_page');
@@ -39,6 +43,7 @@ function page_choose() {
 function liupai_position() {
     $("[href='/store']").addClass('liupai');
 }
+//添加到购物车相应事件
 function addToCart() {
     var album_1 = $.cookie('albums');
     
@@ -89,8 +94,12 @@ function album() {
 //解析COokie中的Json。
 function parse_json_cart() {
     var album_1 = $.cookie('albums');
-    
-    var object = JSON.parse(album_1);
+    if (album_1 != null) {
+        var object = JSON.parse(album_1);
+    }
+    else {
+        return;
+    }
     //alert(object.length);
     set_shopping_cart(object);
     set_itemVal(object);
@@ -110,15 +119,26 @@ function sum(ob1) {
     for (var i in prices) {
         total = prices[i] + total;
     }
-   
-    return total;
+    var total_str = total.toString();
+    if ((total_str.length-total_str.indexOf(".")) > 4) {
+        total_str = total.toString().substring(0, total_str.indexOf(".")+2);
+    }else{
+        total_str=total.toString();
+    }
+    
+    return total_str;
 }
-//得到商品对象数组。
+//从cookie中得到商品对象数组。
 function get_item_array() {
     var album_1 = $.cookie('albums');
-    //alert(album_1);
-    var object = JSON.parse(album_1);
-    return object;
+    if (album_1 != null) {
+        var object = JSON.parse(album_1);
+        return object;
+    }
+    else {
+        return;
+    }
+    
     
 }
 //删除数组中的商品。
@@ -135,7 +155,8 @@ function delete_item(id) {
 function set_itemVal(ob1) {
     $('#p_counts').text(ob1.length);
 }
-//替换购物车的数据，
+
+//替换公共页面中的购物车的数据，
 function set_shopping_cart(ob1) {
     $('.fenge').children().remove();
     //根据数组长度生成相应的列表。
@@ -153,19 +174,106 @@ function set_shopping_cart(ob1) {
          //为符合条件下得各个元素赋值。    
         $(str).find('#cart_img').attr('src', ob1[i].img);
         //替换专辑中的值。
-        $(str).find('#cart_title').text(ob1[i].title);
+        $(str).find('#cart_title a').text(ob1[i].title);
         //替换专辑中的价格。
         $(str).find('#item_price').text(ob1[i].price);
         //替换商品的数量。
         $(str).find('#cart_count').text(ob1[i].count);
         $(str).find('#p_id').val(ob1[i].id);
         //替换删除商品时的点击事件。
-        $(str).find('#delete').attr("onclick", 'delete_item('+i+')');
+        $(str).find('#delete').attr("onclick", 'delete_item(' + i + ')');
+        $(str).find('#p-img a').attr('href', "/store/details?id=" + ob1[i].id);
+        $(str).find('#cart_title a').attr('href', "/store/details?id=" + ob1[i].id);
     }
-    $('#counts').text(ob1.length);
+    
+    $('.counts').text(ob1.length);
     $('#total').text('$' + sum(ob1));
     
 }
-function init_cart() {
+//设置搜索按钮的click点击事件。
+function search() {
+    var search_val = $('.search').val();
    
+        window.location.href ="/home/Search?key=" + search_val;
+      
+}
+//设置分页链接的href属性。
+function setPageHref() {
+
+    $('.page_text').attr('href',"home/search?page=1");
+}
+//根据用户输入关键字对查询到的专辑标题进行动态添加样式。
+function setKeywordClass() {
+    var names=$('#p_name a');
+    var title = names.text();
+    var keyword = $('#key').val().toString();
+    for (var i = 0; i < names.size() ; i++) {
+
+        $('#zhuanji_brwose').children("li").eq(i).addClass(i.toString());
+        title = names.eq(i).text();
+        if (title.match(keyword) == keyword) {
+            title = title.replace(keyword , keyword.fontcolor("red"));
+            names.eq(i).html(title);
+        }
+    }
+   
+}
+//设置购物车页面的主要数据
+function setCart_table() {
+    
+    var ob1 = get_item_array();
+        for (var i in ob1) {
+            var tr = $('#cart_table').find('tr');
+       //根据需求动态向table添加行
+            tr.eq(i).after('<tr><td><input class="cartitem_number" type="hidden" value="' + i + '"/>'
+                + ob1[i].title +
+         '</td><td>' + ob1[i].price + '</td><td>'
+         +'<ul id="number" >'
+            +'<li id="amount">'
+               
+                +'<input id="amount_sub" class="amount_button" type="button" value="-" />'
+               
+                +'<input id="amount_value" name="amount" value="'+ob1[i].count+'" />'
+                +'<input id="amount_add" class="amount_button" type="button" value="+" />'
+            +'</li>' + '</td><td><input id="delete_cart_item"type=button value="删除"></td></tr>');
+      
+        }
+        $('#cartTotal_price').text('$' + sum(ob1));
+    
+}
+//主要针对购物车主页面中的数量进行操作。
+function cart_amount() {
+    var button = $(this);
+    //alert();
+    mutiAmount(button);
+}
+//针对购物车页面中的商品选择，进行逻辑操作。
+function mutiAmount(ob1) {
+    var button = ob1;
+    var rownum = getrownum(button);
+   
+    var amount = getamount_val(rownum);
+    //对得到的值转成int
+    var amount_num=parseInt(amount.val());
+    if (button.val() == '+') {
+        amount.val(amount_num + 1);
+    } else if (button.val() == '-' && amount.val() > 1) {
+        amount.val(amount_num - 1);
+    }
+    
+}
+//得到button点击的行号
+function getrownum(ob1) {
+    var button = ob1;
+    var number = button.parents().find('.cartitem_number').val();
+    var rownum = parseInt(number);
+    return rownum;
+}
+//得到button点击时，得到数量输入框对象。
+function getamount_val(rownum) {
+    var tr = $('#cart_table').find('tr');
+    //找到按钮点击的数量输入框。
+    var amount_val = tr.eq(rownum + 1).find('#amount_value');
+    
+    return amount_val;
 }
